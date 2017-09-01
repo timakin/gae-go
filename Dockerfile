@@ -1,5 +1,4 @@
 FROM circleci/golang:1.9.0
-ENV GAE_GO_SDK_VERSION 1.9.24
 
 RUN sudo apt-get install -y netcat \
                        python \
@@ -7,8 +6,10 @@ RUN sudo apt-get install -y netcat \
                        build-essential \
                        libpng-dev
 
-RUN curl -o $HOME/go_appengine_${GAE_GO_SDK_VERSION}.zip https://storage.googleapis.com/appengine-sdks/featured/go_appengine_sdk_linux_amd64-${GAE_GO_SDK_VERSION}.zip
-RUN unzip -q -d $HOME $HOME/go_appengine_${GAE_GO_SDK_VERSION}.zip
+RUN curl -o google-cloud-sdk-158.0.0-linux-x86_64.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-158.0.0-linux-x86_64.tar.gz
+RUN tar xfv google-cloud-sdk-158.0.0-linux-x86_64.tar.gz
+RUN ./google-cloud-sdk/install.sh
+RUN ./google-cloud-sdk/bin/gcloud init
+RUN gcloud components install app-engine-go
 
-ENV PATH: $PATH:$HOME/go_appengine
 RUN go get -u github.com/golang/dep/cmd/dep
